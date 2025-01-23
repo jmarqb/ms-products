@@ -1,0 +1,3 @@
+ldap:
+  port: 8389
+  password: '{cipher}0341008a471b2622f16963815ce194ef184d3c77e5e764b3272cc5be7b8f452b'

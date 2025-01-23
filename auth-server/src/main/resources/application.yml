@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: auth-server
+  banner:
+    location: http://localhost:8888/config/banner.txt
+  config:
+    import:
+      - configserver:http://localhost:8888/config
+  threads:
+    virtual:
+      enabled: true

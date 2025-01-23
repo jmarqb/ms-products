@@ -1,0 +1,32 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          auth-api:
+            provider: spring
+            client-id: products-api
+            client-secret: secret
+            client-name: products-api
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://localhost:8080/v1/authorized"
+            scope: openid, profile
+        provider:
+          spring:
+            issuer-uri: http://localhost:9000
+  threads:
+    virtual:
+      enabled: true
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+logging:
+  level:
+    org:
+      springframework:
+        security:
+          web: DEBUG

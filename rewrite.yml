@@ -1,0 +1,27 @@
+---
+type: specs.openrewrite.org/v1beta/style
+name: com.jmarqb.ms.products.app.Style
+styleConfigs:
+  - org.openrewrite.java.style.ImportLayoutStyle:
+      classCountToUseStarImport: 999
+      nameCountToUseStarImport: 999
+      layout:
+        - import com.jmarqb.ms.products.app.*
+        - import static com.jmarqb.ms.products.app.*
+        - <blank line>
+        - import org.springframework.*
+        - import static org.springframework.*
+        - <blank line>
+        - import jakarta.*
+        - import java.*
+        - <blank line>
+        - import lombok.*
+        - <blank line>
+        - import all other imports
+        - import static all other imports
+  - org.openrewrite.java.style.TabsAndIndentsStyle:
+      useTabCharacter: true
+      tabSize: 2
+      indentSize: 2
+      continuationIndent: 2
+      indentsRelativeToExpressionStart: true
