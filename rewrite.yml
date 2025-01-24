@@ -1,4 +1,21 @@
 ---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.jmarqb.ms.products.app.Recipe
+recipeList:
+  - org.openrewrite.java.RemoveUnusedImports
+  - org.openrewrite.java.OrderImports
+  - org.openrewrite.java.format.AutoFormat
+  - org.openrewrite.java.format.MethodParamPad
+  - org.openrewrite.hcl.format.RemoveTrailingWhitespace
+  - org.openrewrite.java.format.TypecastParenPad
+  - org.openrewrite.java.migrate.UpgradeBuildToJava21
+  - org.openrewrite.java.spring.boot3.SpringBoot3BestPractices
+  - org.openrewrite.java.testing.assertj.JUnitToAssertj
+  - org.openrewrite.java.testing.junit5.JUnit5BestPractices
+  - org.openrewrite.staticanalysis.JavaApiBestPractices
+  - org.openrewrite.staticanalysis.CommonStaticAnalysis
+---
+---
 type: specs.openrewrite.org/v1beta/style
 name: com.jmarqb.ms.products.app.Style
 styleConfigs:

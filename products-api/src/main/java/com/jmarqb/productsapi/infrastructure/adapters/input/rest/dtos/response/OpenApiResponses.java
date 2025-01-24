@@ -1,10 +1,11 @@
 package com.jmarqb.productsapi.infrastructure.adapters.input.rest.dtos.response;
+
 /**
  * OpenApiResponses
  */
 public class OpenApiResponses {
 
-    public static final String ENTITY_NOT_FOUND_EXAMPLE = """
+	public static final String ENTITY_NOT_FOUND_EXAMPLE = """
         {
           "timestamp": "2024-12-22T23:00:00Z",
           "status": 404,
@@ -14,7 +15,7 @@ public class OpenApiResponses {
         }
     """;
 
-    public static final String UNAUTHORIZED_EXAMPLE = """
+	public static final String UNAUTHORIZED_EXAMPLE = """
         {
           "timestamp": "2024-12-22T23:00:00Z",
           "status": 401,
@@ -24,7 +25,7 @@ public class OpenApiResponses {
         }
     """;
 
-    public static final String BAD_REQUEST_EXAMPLE = """
+	public static final String BAD_REQUEST_EXAMPLE = """
         {
           "timestamp": "2024-12-22T23:00:00Z",
           "status": 400,

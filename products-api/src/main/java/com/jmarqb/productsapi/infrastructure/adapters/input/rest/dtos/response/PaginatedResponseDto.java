@@ -1,10 +1,16 @@
 package com.jmarqb.productsapi.infrastructure.adapters.input.rest.dtos.response;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
-
 import java.util.Date;
 import java.util.List;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
  * DTO for paginated responses.
  */
@@ -16,18 +22,18 @@ import java.util.List;
 @Schema(description = "Paginated response")
 public class PaginatedResponseDto {
 
-    @Schema(description = "total number of elements", example = "10")
-    private int total;
+	@Schema(description = "total number of elements", example = "10")
+	private int total;
 
-    @Schema(description = "page number", example = "0")
-    private int page;
+	@Schema(description = "page number", example = "0")
+	private int page;
 
-    @Schema(description = "page size", example = "20")
-    private int size;
+	@Schema(description = "page size", example = "20")
+	private int size;
 
-    @Schema(description = "data", example = "[]")
-    private List<?> data;
+	@Schema(description = "data", example = "[]")
+	private List<?> data;
 
-    @Schema(description = "timestamp", example = "2021-01-01T00:00:00.000Z")
-    private Date timestamp;
+	@Schema(description = "timestamp", example = "2021-01-01T00:00:00.000Z")
+	private Date timestamp;
 }

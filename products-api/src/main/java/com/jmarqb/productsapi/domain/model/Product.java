@@ -1,13 +1,12 @@
 package com.jmarqb.productsapi.domain.model;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,17 +14,17 @@ import java.util.Date;
 @Setter
 public class Product {
 
-    private String uid;
-    private String name;
-    private String description;
-    private BigDecimal price;
+	private String uid;
+	private String name;
+	private String description;
+	private BigDecimal price;
 
-    private Long stock;
+	private Long stock;
 
-    private String categoryId;
+	private String categoryId;
 
-    private boolean deleted;
+	private boolean deleted;
 
-    private LocalDateTime deletedAt;
+	private LocalDateTime deletedAt;
 
 }

@@ -22,6 +22,8 @@ public class SecurityConfig {
 				.requestMatchers("/v1/authorized", "/swagger-ui/**", "/v3/api-docs/**", "/webjars/swagger-ui/**")
 				.permitAll()
 				.anyRequest().authenticated())
+			.exceptionHandling(exceptionHandling -> exceptionHandling
+				.authenticationEntryPoint(new CustomAuthenticationEntryPoint()))
 			.csrf(AbstractHttpConfigurer::disable)
 			.sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.oauth2Login(login -> login.loginPage("/oauth2/authorization/auth-api"))

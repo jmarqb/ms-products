@@ -1,12 +1,12 @@
 package com.jmarqb.productsapi.domain.model;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,13 +14,13 @@ import java.util.List;
 @Setter
 public class Category {
 
-    private String uid;
-    private String name;
-    private String description;
+	private String uid;
+	private String name;
+	private String description;
 
-    private boolean deleted;
+	private boolean deleted;
 
-    private LocalDateTime deletedAt;
+	private LocalDateTime deletedAt;
 
-    private List<Product> products;
+	private List<Product> products;
 }
