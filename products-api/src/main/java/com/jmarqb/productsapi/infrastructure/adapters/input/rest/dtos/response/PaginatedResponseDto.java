@@ -1,6 +1,6 @@
 package com.jmarqb.productsapi.infrastructure.adapters.input.rest.dtos.response;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -35,5 +35,5 @@ public class PaginatedResponseDto {
 	private List<?> data;
 
 	@Schema(description = "timestamp", example = "2021-01-01T00:00:00.000Z")
-	private Date timestamp;
+	private LocalDateTime timestamp;
 }
