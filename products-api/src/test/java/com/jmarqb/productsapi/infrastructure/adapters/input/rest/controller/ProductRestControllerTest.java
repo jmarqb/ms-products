@@ -1,6 +1,7 @@
 package com.jmarqb.productsapi.infrastructure.adapters.input.rest.controller;
 
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -323,5 +324,20 @@ class ProductRestControllerTest {
 			.andExpect(jsonPath("$.timestamp").exists());
 
 		verify(productUseCase).findProduct(any());
+	}
+
+	@Test
+	void createThrowsHttpMessageNotReadableException() throws Exception {
+		Product product = productMapper.toDomain(createProductDto);
+
+		when(productUseCase.save(product)).thenThrow(new HttpMessageNotReadableException("Cannot deserialize value for Json"));
+
+		mockMvc.perform(post("/api/v1/products")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(objectMapper.writeValueAsString(createProductDto)))
+			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("$.error").value("Json Error"))
+			.andExpect(jsonPath("$.message").value("Cannot deserialize value for Json"));
+
 	}
 }

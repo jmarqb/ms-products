@@ -12,8 +12,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.instancio.Select.field;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -39,7 +40,7 @@ class CategoryMapperHelperTest {
 
 		CategoryEntity result = categoryMapperHelper.map(category.getUid());
 
-		assertEquals(category, result);
+		assertThat(result).isEqualTo(category);
 		verify(categoryRepository).findByUidAndDeletedFalse(category.getUid());
 	}
 
@@ -49,7 +50,7 @@ class CategoryMapperHelperTest {
 
 		CategoryNotFoundException exception = assertThrows(CategoryNotFoundException.class, () -> categoryMapperHelper.map(""));
 
-		assertEquals("Category with %s not found".formatted(""), exception.getMessage());
+		assertThat(exception.getMessage()).isEqualTo("Category with %s not found".formatted(""));
 		verify(categoryRepository).findByUidAndDeletedFalse("");
 	}
 }

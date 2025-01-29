@@ -80,7 +80,7 @@ public class CategoryUseCaseImpl implements CategoryUseCase {
 		categoryPersistencePort.save(category);
 	}
 
-	private Category existCategory(String id) {
+	Category existCategory(String id) {
 		Category category = categoryPersistencePort.findByUidAndDeletedFalse(id);
 		if (category == null) {
 			throw new CategoryNotFoundException("Category with %s not found".formatted(id));

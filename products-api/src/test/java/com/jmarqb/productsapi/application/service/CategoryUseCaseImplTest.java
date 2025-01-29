@@ -246,4 +246,17 @@ class CategoryUseCaseImplTest {
 		assertThat(exception.getMessage()).isEqualTo("Category with %s not found".formatted(someUid));
 		verify(categoryPersistencePort).findByUidAndDeletedFalse(someUid);
 	}
+
+	@Test
+	void existCategory() {
+		String someUid = UUID.randomUUID().toString();
+		when(categoryPersistencePort.findByUidAndDeletedFalse(someUid)).thenReturn(null);
+
+		CategoryNotFoundException exception = assertThrows(
+			CategoryNotFoundException.class, () -> categoryUseCaseImpl.existCategory(someUid));
+
+		assertThat(exception.getMessage()).isEqualTo("Category with %s not found".formatted(someUid));
+		verify(categoryPersistencePort).findByUidAndDeletedFalse(someUid);
+
+	}
 }

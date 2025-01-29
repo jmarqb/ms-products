@@ -73,7 +73,7 @@ public class ProductUseCaseImpl implements ProductUseCase {
 		productPersistencePort.save(product);
 	}
 
-	private Product existProduct(String id) {
+	Product existProduct(String id) {
 		Product product = productPersistencePort.findByUidAndDeletedFalse(id);
 		if (product == null) {
 			throw new ProductNotFoundException("Product with %s not found".formatted(id));

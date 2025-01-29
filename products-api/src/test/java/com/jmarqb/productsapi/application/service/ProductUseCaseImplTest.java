@@ -201,4 +201,16 @@ class ProductUseCaseImplTest {
 		assertThat(exception.getMessage()).isEqualTo("Product with %s not found".formatted(someUid));
 		verify(productPersistencePort).findByUidAndDeletedFalse(someUid);
 	}
+
+	@Test
+	void existProduct() {
+		String someUid = UUID.randomUUID().toString();
+		when(productPersistencePort.findByUidAndDeletedFalse(someUid)).thenReturn(null);
+
+		ProductNotFoundException exception = assertThrows(
+			ProductNotFoundException.class, () -> productUseCaseImpl.existProduct(someUid));
+
+		assertThat(exception.getMessage()).isEqualTo("Product with %s not found".formatted(someUid));
+		verify(productPersistencePort).findByUidAndDeletedFalse(someUid);
+	}
 }
