@@ -65,6 +65,7 @@
                 <executions>
                     <execution>
                         <id>default-prepare-agent</id>
+                        <phase>initialize</phase>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
@@ -81,7 +82,7 @@
                                 <exclude>com/jmarqb/productsapi/application/ports/*</exclude>
                                 <exclude>com/jmarqb/productsapi/application/service/enums/*</exclude>
                                 <exclude>com/jmarqb/productsapi/application/service/validation/*</exclude>
-                                <exclude>com/jmarqb/productsapi/infrastructure/config/CustomAuthenticationEntryPoint.java</exclude>
+                                <exclude>com/jmarqb/productsapi/infrastructure/config/CustomAuthenticationEntryPoint.class</exclude>
                                 <exclude>com/jmarqb/productsapi/infrastructure/adapters/exceptions/*</exclude>
                                 <exclude>com/jmarqb/productsapi/infrastructure/adapters/exceptions/*</exclude>
                                 <exclude>com/jmarqb/productsapi/infrastructure/adapters/output/persistence/model/*</exclude>
