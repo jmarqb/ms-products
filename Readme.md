@@ -90,6 +90,12 @@ There are two ways to run the application:
 Build and run with Maven or Build and run with Docker.
 
 1. **Build and run with Maven**:
+
+- Open the corresponding script (start.sh for Unix/Linux or start.bat for Windows) with text editor and replace 
+![img.png](img.png)
+with your database and mySQL  user credentials.
+
+- Save the file and close it. Then, run the script:
 ### For Unix/Linux systems:
 
 ```bash
@@ -112,7 +118,7 @@ chmod +x start.sh
   Once the servers are running, open your browser and navigate to http://localhost:8080/oauth2/authorization/auth-api ,this will redirect you to the login page.
 
 - **Login to the system**:
-  You will be redirected to the login page hosted on the LDAP server (`http://localhost:9000/login`). Enter your username and password.
+  You will be redirected to the login page hosted on the LDAP server (`http://localhost:9000/login`). Enter username and password. The username and password for user with manager role are ( `ben` and `ben`)
 
 - **Obtain the token**:
   Once you have logged in, the OAuth2 token will be generated and displayed on the screen. Copy the token and use it in the subsequent requests to access protected resources (Products API).
@@ -154,7 +160,7 @@ This will set up and start both the application and necessary services like the 
   Once the containers are running, open your browser and navigate to http://localhost:8080/oauth2/authorization/auth-api ,this will redirect you to the login page.
 
 - **Login to the system**:
-  You will be redirected to the login page hosted on the LDAP server (`http://auth-server:9000/login`). Enter your username and password.
+  You will be redirected to the login page hosted on the LDAP server (`http://auth-server:9000/login`). Enter username and password. The username and password for user with manager role are ( `ben` and `ben`)
 
 - **Obtain the token**:
   Once you have logged in, the OAuth2 token will be generated and displayed on the screen. Copy the token and use it in the subsequent requests to access protected resources (Products API).
