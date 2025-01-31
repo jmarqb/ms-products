@@ -20,7 +20,7 @@ public class LdapServer implements CommandLineRunner {
 	private final Integer ldapPort;
 	private final Resource schema;
 
-	public LdapServer(@Value("${ldap.port}") Integer ldapPort, @Value("${ldap.password}") String ldapPassword, @Value("${SCHEMA_LDIF}") Resource schema) {
+	public LdapServer(@Value("${ldap.port}") Integer ldapPort, @Value("${ldap.password}") String ldapPassword, @Value("${SCHEMA_LDIF:schema.ldif}") Resource schema) {
 		this.ldapPassword = ldapPassword;
 		this.ldapPort = ldapPort;
 		this.schema = schema;
