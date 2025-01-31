@@ -58,6 +58,12 @@ public class SecurityConfig {
 	private final RSAPublicKey publicKey;
 	private final RSAPrivateKey privateKey;
 
+	@Value("${REDIRECT_URI_1:http://localhost:8080/login/oauth2/code/auth-api}")
+	private String redirectUri1;
+
+	@Value("${REDIRECT_URI_2:http://localhost:8080/v1/authorized}")
+	private String redirectUri2;
+
 	public SecurityConfig(@Value("${jwt.public}") RSAPublicKey publicKey, @Value("${jwt.private}") RSAPrivateKey privateKey) {
 		this.publicKey = publicKey;
 		this.privateKey = privateKey;
@@ -96,8 +102,8 @@ public class SecurityConfig {
 			.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
 			.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 			.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-			.redirectUri("http://localhost:8080/login/oauth2/code/auth-api")
-			.redirectUri("http://localhost:8080/v1/authorized")
+			.redirectUri(redirectUri1)
+			.redirectUri(redirectUri2)
 			.scope(OidcScopes.OPENID)
 			.scope(OidcScopes.PROFILE)
 			.tokenSettings(tokenSettings)

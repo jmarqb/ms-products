@@ -174,16 +174,6 @@
           </dependency>
         </dependencies>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <parallel>classes</parallel>
-          <forkCount>4</forkCount>
-          <reuseForks>true</reuseForks>
-          <reportsDirectory>${project.build.directory}/test-results/test</reportsDirectory>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 </project>

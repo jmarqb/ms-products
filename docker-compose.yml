@@ -1,0 +1,90 @@
+version: '3.8'
+
+services:
+  config-server:
+    build:
+      context: ./config
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    restart: unless-stopped
+    networks:
+      - ms-products-network
+
+  ldap-server:
+    build:
+      context: ./ldap-server
+      dockerfile: Dockerfile
+    environment:
+      - SCHEMA_LDIF=file:/app/schema.ldif
+      - CONFIG_SERVER_URI=http://config-server:8888/config/
+      - ISSUER_URI=http://auth-server:9000
+      - JWK_SET_URI=http://auth-server:9000/oauth2/jwks
+    ports:
+      - "8389:8389"
+    restart: unless-stopped
+    depends_on:
+      - config-server
+    networks:
+      - ms-products-network
+
+
+  auth-server:
+    build:
+      context: ./auth-server
+      dockerfile: Dockerfile
+    environment:
+      - CONFIG_SERVER_URI=http://config-server:8888/config/
+      - LDAP_URL=ldap://ldap-server:8389
+      - ISSUER_URI=http://auth-server:9000/auth
+      - JWK_SET_URI=http://auth-server:9000/auth/oauth2/jwks
+      - REDIRECT_URI_1=http://products-api:8080/login/oauth2/code/auth-api
+      - REDIRECT_URI_2=http://products-api:8080/v1/authorized
+    ports:
+      - "9000:9000"
+    restart: unless-stopped
+
+    depends_on:
+      - config-server
+      - ldap-server
+    networks:
+      - ms-products-network
+
+
+  products-api:
+    build:
+      context: ./products-api
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_URL=jdbc:mysql://mysql:3306/ms_api_productsDB?createDatabaseIfNotExist=true&serverTimezone=UTC
+      - DB_USERNAME=root
+      - DB_PASSWORD=sasa
+      - CONFIG_SERVER_URI=http://config-server:8888/config/
+      - ISSUER_URI=http://auth-server:9000
+      - JWK_SET_URI=http://auth-server:9000/oauth2/jwks
+      - REDIRECT_URI_2=http://products-api:8080/v1/authorized
+    restart: unless-stopped
+    depends_on:
+      - mysql
+      - auth-server
+      - config-server
+    networks:
+      - ms-products-network
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: sasa
+      MYSQL_DATABASE: ms_api_productsDB
+      MYSQL_PASSWORD: sasa
+    ports:
+      - "3307:3306"
+    restart: unless-stopped
+    networks:
+      - ms-products-network
+
+networks:
+  ms-products-network:
+    driver: bridge

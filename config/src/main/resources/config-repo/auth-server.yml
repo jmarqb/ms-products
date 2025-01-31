@@ -1,6 +1,6 @@
 spring:
   ldap:
-    urls: ldap://localhost:8389
+    urls: ${LDAP_URL:ldap://localhost:8389}
     base: dc=jmarqb,dc=com
     username: cn=manager
     password: password

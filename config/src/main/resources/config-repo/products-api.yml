@@ -9,12 +9,12 @@ spring:
             client-secret: secret
             client-name: products-api
             authorization-grant-type: authorization_code
-            redirect-uri: "http://localhost:8080/v1/authorized"
+            redirect-uri: ${REDIRECT_URI_2:http://localhost:8080/v1/authorized}
             scope: openid, profile
         provider:
           spring:
-            issuer-uri: http://localhost:9000
-# MySQL
+            issuer-uri: ${ISSUER_URI:http://localhost:9000}
+  # MySQL
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}

@@ -2,8 +2,8 @@ spring:
   application:
     name: products-api
   banner:
-    location: http://localhost:8888/config/banner.txt
+    location: http://config-server:8888/config/banner.txt
   config:
     import:
-      - configserver:http://localhost:8888/config
+      - configserver:${CONFIG_SERVER_URI:http://localhost:8888/config/}
 
