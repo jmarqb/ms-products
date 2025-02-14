@@ -3,7 +3,7 @@ package com.jmarqb.productsapi.infrastructure.adapters.output.persistence.mapper
 import java.util.ArrayList;
 import java.util.UUID;
 
-import com.jmarqb.productsapi.infrastructure.adapters.exceptions.CategoryNotFoundException;
+import com.jmarqb.productsapi.application.service.exceptions.CategoryNotFoundException;
 import com.jmarqb.productsapi.infrastructure.adapters.output.persistence.model.CategoryEntity;
 import com.jmarqb.productsapi.infrastructure.adapters.output.persistence.repository.CategoryRepository;
 import org.instancio.Instancio;

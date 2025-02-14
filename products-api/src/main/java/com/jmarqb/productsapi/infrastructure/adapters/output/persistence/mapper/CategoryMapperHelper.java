@@ -2,7 +2,7 @@ package com.jmarqb.productsapi.infrastructure.adapters.output.persistence.mapper
 
 import org.springframework.stereotype.Component;
 
-import com.jmarqb.productsapi.infrastructure.adapters.exceptions.CategoryNotFoundException;
+import com.jmarqb.productsapi.application.service.exceptions.CategoryNotFoundException;
 import com.jmarqb.productsapi.infrastructure.adapters.output.persistence.model.CategoryEntity;
 import com.jmarqb.productsapi.infrastructure.adapters.output.persistence.repository.CategoryRepository;
 

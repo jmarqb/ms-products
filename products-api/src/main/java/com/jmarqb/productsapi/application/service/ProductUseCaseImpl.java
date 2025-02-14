@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 import com.jmarqb.productsapi.application.ports.input.ProductUseCase;
 import com.jmarqb.productsapi.domain.model.Product;
 import com.jmarqb.productsapi.domain.ports.output.persistence.ProductPersistencePort;
-import com.jmarqb.productsapi.infrastructure.adapters.exceptions.ProductNotFoundException;
+import com.jmarqb.productsapi.application.service.exceptions.ProductNotFoundException;
 
 @RequiredArgsConstructor
 @Component

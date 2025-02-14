@@ -15,9 +15,9 @@ import com.jmarqb.productsapi.application.ports.input.CategoryUseCase;
 import com.jmarqb.productsapi.domain.model.Category;
 import com.jmarqb.productsapi.domain.ports.output.persistence.CategoryPersistencePort;
 import com.jmarqb.productsapi.domain.ports.output.persistence.ProductPersistencePort;
-import com.jmarqb.productsapi.infrastructure.adapters.exceptions.CategoryNotFoundException;
-import com.jmarqb.productsapi.infrastructure.adapters.exceptions.CategoryWithProductsException;
-import com.jmarqb.productsapi.infrastructure.adapters.exceptions.ProductNotFoundException;
+import com.jmarqb.productsapi.application.service.exceptions.CategoryNotFoundException;
+import com.jmarqb.productsapi.application.service.exceptions.CategoryWithProductsException;
+import com.jmarqb.productsapi.application.service.exceptions.ProductNotFoundException;
 
 @RequiredArgsConstructor
 @Component
