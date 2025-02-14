@@ -1,4 +1,4 @@
-package com.jmarqb.productsapi.infrastructure.adapters.exceptions;
+package com.jmarqb.productsapi.application.service.exceptions;
 
 public class DuplicateKeyException extends RuntimeException {
 	public DuplicateKeyException(String message) {
