@@ -1,4 +1,4 @@
-package com.jmarqb.productsapi.application.service;
+package com.jmarqb.productsapi.application.impl;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import com.jmarqb.productsapi.domain.model.Product;
 import com.jmarqb.productsapi.domain.ports.output.persistence.ProductPersistencePort;
-import com.jmarqb.productsapi.application.service.exceptions.ProductNotFoundException;
+import com.jmarqb.productsapi.application.exceptions.ProductNotFoundException;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,4 +1,4 @@
-package com.jmarqb.productsapi.application.service;
+package com.jmarqb.productsapi.application.impl;
 
 import com.jmarqb.productsapi.domain.ports.output.auth.AuthenticationDetail;
 import com.jmarqb.productsapi.domain.ports.output.auth.DelegateAuthentication;
