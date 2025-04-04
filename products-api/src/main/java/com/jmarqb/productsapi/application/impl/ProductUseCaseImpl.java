@@ -1,4 +1,4 @@
-package com.jmarqb.productsapi.application.service;
+package com.jmarqb.productsapi.application.impl;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 import com.jmarqb.productsapi.application.ports.input.ProductUseCase;
 import com.jmarqb.productsapi.domain.model.Product;
 import com.jmarqb.productsapi.domain.ports.output.persistence.ProductPersistencePort;
-import com.jmarqb.productsapi.application.service.exceptions.ProductNotFoundException;
+import com.jmarqb.productsapi.application.exceptions.ProductNotFoundException;
 
 @RequiredArgsConstructor
 @Component

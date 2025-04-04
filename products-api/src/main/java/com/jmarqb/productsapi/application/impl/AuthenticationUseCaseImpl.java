@@ -1,4 +1,4 @@
-package com.jmarqb.productsapi.application.service;
+package com.jmarqb.productsapi.application.impl;
 
 import org.springframework.stereotype.Component;
 

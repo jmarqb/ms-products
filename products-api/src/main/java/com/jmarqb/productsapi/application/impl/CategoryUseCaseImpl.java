@@ -1,4 +1,4 @@
-package com.jmarqb.productsapi.application.service;
+package com.jmarqb.productsapi.application.impl;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,9 +15,9 @@ import com.jmarqb.productsapi.application.ports.input.CategoryUseCase;
 import com.jmarqb.productsapi.domain.model.Category;
 import com.jmarqb.productsapi.domain.ports.output.persistence.CategoryPersistencePort;
 import com.jmarqb.productsapi.domain.ports.output.persistence.ProductPersistencePort;
-import com.jmarqb.productsapi.application.service.exceptions.CategoryNotFoundException;
-import com.jmarqb.productsapi.application.service.exceptions.CategoryWithProductsException;
-import com.jmarqb.productsapi.application.service.exceptions.ProductNotFoundException;
+import com.jmarqb.productsapi.application.exceptions.CategoryNotFoundException;
+import com.jmarqb.productsapi.application.exceptions.CategoryWithProductsException;
+import com.jmarqb.productsapi.application.exceptions.ProductNotFoundException;
 
 @RequiredArgsConstructor
 @Component
