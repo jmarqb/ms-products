@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jmarqb.productsapi.application.ports.input.CategoryUseCase;
 import com.jmarqb.productsapi.domain.model.Category;
 import com.jmarqb.productsapi.domain.model.Product;
-import com.jmarqb.productsapi.application.service.exceptions.CategoryNotFoundException;
+import com.jmarqb.productsapi.application.exceptions.CategoryNotFoundException;
 import com.jmarqb.productsapi.infrastructure.adapters.input.rest.advice.HandlerExceptionController;
 import com.jmarqb.productsapi.infrastructure.adapters.input.rest.dtos.request.CreateCategoryDto;
 import com.jmarqb.productsapi.infrastructure.adapters.input.rest.dtos.request.PatchCategoryDto;

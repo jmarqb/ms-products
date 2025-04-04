@@ -18,10 +18,10 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 
 import com.jmarqb.productsapi.domain.model.Error;
-import com.jmarqb.productsapi.application.service.exceptions.CategoryNotFoundException;
-import com.jmarqb.productsapi.application.service.exceptions.CategoryWithProductsException;
-import com.jmarqb.productsapi.application.service.exceptions.DuplicateKeyException;
-import com.jmarqb.productsapi.application.service.exceptions.ProductNotFoundException;
+import com.jmarqb.productsapi.application.exceptions.CategoryNotFoundException;
+import com.jmarqb.productsapi.application.exceptions.CategoryWithProductsException;
+import com.jmarqb.productsapi.application.exceptions.DuplicateKeyException;
+import com.jmarqb.productsapi.application.exceptions.ProductNotFoundException;
 
 @Slf4j
 @RestControllerAdvice

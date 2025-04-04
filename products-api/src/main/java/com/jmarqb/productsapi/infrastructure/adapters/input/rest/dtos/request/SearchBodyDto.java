@@ -5,8 +5,8 @@ import jakarta.validation.constraints.Min;
 import lombok.Builder;
 import lombok.Data;
 
-import com.jmarqb.productsapi.application.service.enums.Sort;
-import com.jmarqb.productsapi.application.service.validation.ValueOfEnum;
+import com.jmarqb.productsapi.application.enums.Sort;
+import com.jmarqb.productsapi.application.validation.ValueOfEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Builder
