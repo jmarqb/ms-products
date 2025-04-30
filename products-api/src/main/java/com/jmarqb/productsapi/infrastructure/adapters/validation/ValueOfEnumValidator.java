@@ -1,4 +1,4 @@
-package com.jmarqb.productsapi.application.validation;
+package com.jmarqb.productsapi.infrastructure.adapters.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
