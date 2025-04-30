@@ -1,8 +1,7 @@
 package com.jmarqb.productsapi.application.impl;
 
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import com.jmarqb.productsapi.application.mapper.UpdateFieldMapper;
+import com.jmarqb.productsapi.domain.model.Pagination;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -22,6 +21,9 @@ public class ProductUseCaseImpl implements ProductUseCase {
 
 	private final ProductPersistencePort productPersistencePort;
 
+	private final UpdateFieldMapper updateFieldMapper;
+
+
 	@Override
 	public Product save(Product product) {
 		product.setUid(UUID.randomUUID().toString());
@@ -32,11 +34,10 @@ public class ProductUseCaseImpl implements ProductUseCase {
 	public List<Product> search(String search, int page, int size, String sort) {
 		List<Product> products;
 
-		Pageable pageable = PageRequest.of(page, size, "asc".equalsIgnoreCase(sort) ?
-			Sort.Direction.ASC : Sort.Direction.DESC, "id");
+		Pagination pagination = new Pagination(page, size, sort, "uid");
 
-		products = search != null ? productPersistencePort.searchAllByRegex(search, pageable) :
-			productPersistencePort.searchAll(pageable);
+		products = search != null ? productPersistencePort.searchAllByRegex(search, pagination) :
+			productPersistencePort.searchAll(pagination);
 
 		return products;
 	}
@@ -45,10 +46,9 @@ public class ProductUseCaseImpl implements ProductUseCase {
 	public List<Product> searchByCategory(String categoryId, int page, int size, String sort) {
 		List<Product> products;
 
-		Pageable pageable = PageRequest.of(page, size, "asc".equalsIgnoreCase(sort) ?
-			Sort.Direction.ASC : Sort.Direction.DESC, "id");
+		Pagination pagination = new Pagination(page, size, sort, "uid");
 
-		products = productPersistencePort.searchAllByCategory(categoryId, pageable);
+		products = productPersistencePort.searchAllByCategory(categoryId, pagination);
 
 		return products;
 	}
@@ -61,7 +61,7 @@ public class ProductUseCaseImpl implements ProductUseCase {
 	@Override
 	public Product updateProduct(Product dataToUpdateProduct) {
 		Product actualProduct = existProduct(dataToUpdateProduct.getUid());
-		updateProductFields(actualProduct, dataToUpdateProduct);
+		updateFieldMapper.updateProduct(dataToUpdateProduct, actualProduct);
 		return productPersistencePort.save(actualProduct);
 	}
 
@@ -79,20 +79,5 @@ public class ProductUseCaseImpl implements ProductUseCase {
 			throw new ProductNotFoundException("Product with %s not found".formatted(id));
 		}
 		return product;
-	}
-
-	private void updateProductFields(Product actualProduct, Product dataToUpdateProduct) {
-		if (dataToUpdateProduct.getName() != null) {
-			actualProduct.setName(dataToUpdateProduct.getName());
-		}
-		if (dataToUpdateProduct.getDescription() != null) {
-			actualProduct.setDescription(dataToUpdateProduct.getDescription());
-		}
-		if (dataToUpdateProduct.getPrice() != null) {
-			actualProduct.setPrice(dataToUpdateProduct.getPrice());
-		}
-		if (dataToUpdateProduct.getStock() != null) {
-			actualProduct.setStock(dataToUpdateProduct.getStock());
-		}
 	}
 }
