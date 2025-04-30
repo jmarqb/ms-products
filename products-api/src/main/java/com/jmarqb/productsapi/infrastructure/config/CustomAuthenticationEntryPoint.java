@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.jmarqb.productsapi.domain.model.Error;
+import com.jmarqb.productsapi.infrastructure.adapters.input.rest.advice.Error;
 
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 	@Override

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 
-import com.jmarqb.productsapi.domain.model.Error;
+import com.jmarqb.productsapi.infrastructure.adapters.input.rest.advice.Error;
 import com.jmarqb.productsapi.infrastructure.adapters.input.rest.dtos.request.CreateProductDto;
 import com.jmarqb.productsapi.infrastructure.adapters.input.rest.dtos.request.PatchProductDto;
 import com.jmarqb.productsapi.infrastructure.adapters.input.rest.dtos.request.SearchBodyDto;
