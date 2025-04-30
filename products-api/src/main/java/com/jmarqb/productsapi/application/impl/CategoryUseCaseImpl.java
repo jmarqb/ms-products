@@ -1,8 +1,7 @@
 package com.jmarqb.productsapi.application.impl;
 
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import com.jmarqb.productsapi.application.mapper.UpdateFieldMapper;
+import com.jmarqb.productsapi.domain.model.Pagination;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -27,6 +26,9 @@ public class CategoryUseCaseImpl implements CategoryUseCase {
 
 	private final ProductPersistencePort productPersistencePort;
 
+	private final UpdateFieldMapper updateFieldMapper;
+
+
 	@Override
 	public Category save(Category category) {
 		category.setUid(UUID.randomUUID().toString());
@@ -37,11 +39,10 @@ public class CategoryUseCaseImpl implements CategoryUseCase {
 	public List<Category> search(String search, int page, int size, String sort) {
 		List<Category> categories;
 
-		Pageable pageable = PageRequest.of(page, size, "asc".equalsIgnoreCase(sort) ?
-			Sort.Direction.ASC : Sort.Direction.DESC, "id");
+		Pagination pagination = new Pagination(page, size, sort, "uid");
 
-		categories = search != null ? categoryPersistencePort.searchAllByRegex(search, pageable)
-			: categoryPersistencePort.searchAll(pageable);
+		categories = search != null ? categoryPersistencePort.searchAllByRegex(search, pagination)
+			: categoryPersistencePort.searchAll(pagination);
 
 		return categories;
 	}
@@ -67,7 +68,7 @@ public class CategoryUseCaseImpl implements CategoryUseCase {
 	@Override
 	public Category updateCategory(Category dataToUpdateCategory) {
 		Category actualCategory = existCategory(dataToUpdateCategory.getUid());
-		updateCategoryFields(actualCategory, dataToUpdateCategory);
+		updateFieldMapper.updateCategory(dataToUpdateCategory, actualCategory);
 		return categoryPersistencePort.save(actualCategory);
 	}
 
@@ -91,15 +92,6 @@ public class CategoryUseCaseImpl implements CategoryUseCase {
 	private void isCategoryWithProducts(Category category) {
 		if (category.getProducts() != null && !category.getProducts().isEmpty()) {
 			throw new CategoryWithProductsException("Category with %s has products".formatted(category.getUid()));
-		}
-	}
-
-	private void updateCategoryFields(Category actualCategory, Category dataToUpdateCategory) {
-		if (dataToUpdateCategory.getName() != null) {
-			actualCategory.setName(dataToUpdateCategory.getName());
-		}
-		if (dataToUpdateCategory.getDescription() != null) {
-			actualCategory.setDescription(dataToUpdateCategory.getDescription());
 		}
 	}
 }

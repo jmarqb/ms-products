@@ -1,5 +1,6 @@
 package com.jmarqb.productsapi.infrastructure.adapters.output.persistence;
 
+import com.jmarqb.productsapi.domain.model.Pagination;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -38,6 +39,9 @@ class CategoryPersistenceAdapterTest {
 	private Category category;
 	private Pageable pageable;
 
+	private final Pagination pagination = new Pagination(0, 10, "ASC", "uid");
+
+
 
 	@BeforeEach
 	void setUp() {
@@ -55,7 +59,8 @@ class CategoryPersistenceAdapterTest {
 			.set(field(CategoryEntity::getProducts), new ArrayList<>())
 			.create();
 
-		pageable = PageRequest.of(0, 20, Sort.Direction.ASC, "uid");
+		pageable = PageRequest.of(pagination.page(), pagination.size(), "asc".equalsIgnoreCase(pagination.sort()) ?
+				Sort.Direction.ASC : Sort.Direction.DESC, pagination.sortBy());
 
 	}
 
@@ -78,7 +83,7 @@ class CategoryPersistenceAdapterTest {
 		when(categoryRepository.searchAll(pageable)).thenReturn(List.of(categoryEntity, categoryEntity));
 		when(categoryPersistenceMapper.toCategoryList(List.of(categoryEntity, categoryEntity))).thenReturn(List.of(category, category));
 
-		List<Category> result = categoryPersistenceAdapter.searchAll(pageable);
+		List<Category> result = categoryPersistenceAdapter.searchAll(pagination);
 
 		assertThat(result).isEqualTo(List.of(category, category));
 
@@ -91,7 +96,7 @@ class CategoryPersistenceAdapterTest {
 		when(categoryRepository.searchAllByRegex("nameCategory", pageable)).thenReturn(List.of(categoryEntity, categoryEntity));
 		when(categoryPersistenceMapper.toCategoryList(List.of(categoryEntity, categoryEntity))).thenReturn(List.of(category, category));
 
-		List<Category> result = categoryPersistenceAdapter.searchAllByRegex("nameCategory", pageable);
+		List<Category> result = categoryPersistenceAdapter.searchAllByRegex("nameCategory", pagination);
 
 		assertThat(result).isEqualTo(List.of(category, category));
 

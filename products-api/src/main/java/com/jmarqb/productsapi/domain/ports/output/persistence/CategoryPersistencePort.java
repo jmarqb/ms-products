@@ -1,6 +1,6 @@
 package com.jmarqb.productsapi.domain.ports.output.persistence;
 
-import org.springframework.data.domain.Pageable;
+import com.jmarqb.productsapi.domain.model.Pagination;
 
 import java.util.List;
 
@@ -10,9 +10,9 @@ public interface CategoryPersistencePort {
 
 	Category save(Category category);
 
-	List<Category> searchAll(Pageable pageable);
+	List<Category> searchAll(Pagination pagination);
 
-	List<Category> searchAllByRegex(String regex, Pageable pageable);
+	List<Category> searchAllByRegex(String regex, Pagination pagination);
 
 	Category searchByProductId(String productId);
 

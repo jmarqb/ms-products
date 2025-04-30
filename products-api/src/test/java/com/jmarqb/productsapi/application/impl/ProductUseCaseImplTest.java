@@ -1,7 +1,7 @@
 package com.jmarqb.productsapi.application.impl;
 
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import com.jmarqb.productsapi.application.mapper.UpdateFieldMapper;
+import com.jmarqb.productsapi.domain.model.Pagination;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,16 +15,19 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static com.jmarqb.productsapi.Util.getPagination;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProductUseCaseImplTest {
 
 	private @Mock ProductPersistencePort productPersistencePort;
+
+	private @Mock UpdateFieldMapper updateFieldMapper;
 
 	private @InjectMocks ProductUseCaseImpl productUseCaseImpl;
 
@@ -54,16 +57,18 @@ class ProductUseCaseImplTest {
 		int size = 10;
 		String sort = "ASC";
 
+		Pagination pagination = getPagination(page, size, sort);
+
 		List<Product> expectedProducts = List.of(product);
 
 		when(productPersistencePort
-			.searchAllByRegex(searchRegex, PageRequest.of(page, size, Sort.Direction.ASC, "id")))
+			.searchAllByRegex(searchRegex, pagination))
 			.thenReturn(expectedProducts);
 
 		List<Product> actualProducts = productUseCaseImpl.search(searchRegex, page, size, sort);
 
 		assertThat(actualProducts).isEqualTo(expectedProducts);
-		verify(productPersistencePort).searchAllByRegex(searchRegex, PageRequest.of(page, size, Sort.Direction.ASC, "id"));
+		verify(productPersistencePort).searchAllByRegex(searchRegex, pagination);
 	}
 
 	@Test
@@ -73,16 +78,18 @@ class ProductUseCaseImplTest {
 		int size = 10;
 		String sort = "ASC";
 
+		Pagination pagination = getPagination(page, size, sort);
+
 		List<Product> expectedProducts = List.of(product);
 
 		when(productPersistencePort
-			.searchAll(PageRequest.of(page, size, Sort.Direction.ASC, "id")))
+			.searchAll(pagination))
 			.thenReturn(expectedProducts);
 
 		List<Product> actualProducts = productUseCaseImpl.search(null, page, size, sort);
 
 		assertThat(actualProducts).isEqualTo(expectedProducts);
-		verify(productPersistencePort).searchAll(PageRequest.of(page, size, Sort.Direction.ASC, "id"));
+		verify(productPersistencePort).searchAll(pagination);
 	}
 
 	@Test
@@ -93,16 +100,18 @@ class ProductUseCaseImplTest {
 		int size = 10;
 		String sort = "ASC";
 
+		Pagination pagination = getPagination(page, size, sort);
+
 		List<Product> expectedProducts = List.of(product);
 
 		when(productPersistencePort
-			.searchAllByCategory(someCategoryUid, PageRequest.of(page, size, Sort.Direction.ASC, "id")))
+			.searchAllByCategory(someCategoryUid, pagination))
 			.thenReturn(expectedProducts);
 
 		List<Product> actualProducts = productUseCaseImpl.searchByCategory(someCategoryUid, page, size, sort);
 
 		assertThat(actualProducts).isEqualTo(expectedProducts);
-		verify(productPersistencePort).searchAllByCategory(someCategoryUid, PageRequest.of(page, size, Sort.Direction.ASC, "id"));
+		verify(productPersistencePort).searchAllByCategory(someCategoryUid, pagination);
 	}
 
 	@Test
@@ -144,9 +153,11 @@ class ProductUseCaseImplTest {
 		product.setDescription(dataToUpdateProduct.getDescription());
 
 		when(productPersistencePort.findByUidAndDeletedFalse(id))
-			.thenReturn(product);
+				.thenReturn(product);
 
 		when(productPersistencePort.save(product)).thenReturn(product);
+
+		doNothing().when(updateFieldMapper).updateProduct(dataToUpdateProduct, product);
 
 		Product actualProduct = productUseCaseImpl.updateProduct(dataToUpdateProduct);
 

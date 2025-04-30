@@ -1,6 +1,6 @@
 package com.jmarqb.productsapi.infrastructure.adapters.output.persistence;
 
-import org.springframework.data.domain.Pageable;
+import com.jmarqb.productsapi.domain.model.Pagination;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -10,6 +10,9 @@ import com.jmarqb.productsapi.domain.ports.output.persistence.CategoryPersistenc
 import com.jmarqb.productsapi.infrastructure.adapters.output.persistence.mapper.CategoryPersistenceMapper;
 import com.jmarqb.productsapi.infrastructure.adapters.output.persistence.model.CategoryEntity;
 import com.jmarqb.productsapi.infrastructure.adapters.output.persistence.repository.CategoryRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import static com.jmarqb.productsapi.infrastructure.adapters.output.persistence.common.BuildPageable.buildPageable;
 
 @Component
 public class CategoryPersistenceAdapter implements CategoryPersistencePort {
@@ -22,6 +25,7 @@ public class CategoryPersistenceAdapter implements CategoryPersistencePort {
 		this.categoryPersistenceMapper = categoryPersistenceMapper;
 	}
 
+	@Transactional
 	@Override
 	public Category save(Category category) {
 		CategoryEntity categoryEntity = this.categoryPersistenceMapper.toEntity(category);
@@ -29,21 +33,25 @@ public class CategoryPersistenceAdapter implements CategoryPersistencePort {
 		return this.categoryPersistenceMapper.toDomain(returnedCategoryEntity);
 	}
 
+	@Transactional(readOnly = true)
 	@Override
-	public List<Category> searchAll(Pageable pageable) {
-		return this.categoryPersistenceMapper.toCategoryList(this.categoryRepository.searchAll(pageable));
+	public List<Category> searchAll(Pagination pagination) {
+		return this.categoryPersistenceMapper.toCategoryList(this.categoryRepository.searchAll(buildPageable(pagination)));
 	}
 
+	@Transactional(readOnly = true)
 	@Override
-	public List<Category> searchAllByRegex(String regex, Pageable pageable) {
-		return this.categoryPersistenceMapper.toCategoryList(this.categoryRepository.searchAllByRegex(regex, pageable));
+	public List<Category> searchAllByRegex(String regex, Pagination pagination) {
+		return this.categoryPersistenceMapper.toCategoryList(this.categoryRepository.searchAllByRegex(regex, buildPageable(pagination)));
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public Category searchByProductId(String productId) {
 		return this.categoryPersistenceMapper.toDomain(this.categoryRepository.searchByProductId(productId));
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public Category findByUidAndDeletedFalse(String uid) {
 		return this.categoryPersistenceMapper.toDomain(this.categoryRepository.findByUidAndDeletedFalse(uid));

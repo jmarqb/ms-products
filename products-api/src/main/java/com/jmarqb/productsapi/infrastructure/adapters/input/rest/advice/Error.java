@@ -1,4 +1,4 @@
-package com.jmarqb.productsapi.domain.model;
+package com.jmarqb.productsapi.infrastructure.adapters.input.rest.advice;
 
 import java.time.LocalDateTime;
 import java.util.List;
