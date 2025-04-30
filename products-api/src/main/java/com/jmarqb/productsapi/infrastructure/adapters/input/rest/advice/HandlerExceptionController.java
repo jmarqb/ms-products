@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
 
-import com.jmarqb.productsapi.domain.model.Error;
 import com.jmarqb.productsapi.application.exceptions.CategoryNotFoundException;
 import com.jmarqb.productsapi.application.exceptions.CategoryWithProductsException;
 import com.jmarqb.productsapi.application.exceptions.DuplicateKeyException;
@@ -26,92 +25,68 @@ import com.jmarqb.productsapi.application.exceptions.ProductNotFoundException;
 @Slf4j
 @RestControllerAdvice
 public class HandlerExceptionController {
-	@ExceptionHandler({MethodArgumentNotValidException.class})
-	public ResponseEntity<Error> handleValidationException(MethodArgumentNotValidException ex) {
-		List<Error.FieldError> fieldErrors = ex.getBindingResult()
-			.getFieldErrors()
-			.stream()
-			.map(error -> Error.FieldError.builder()
-				.field(error.getField())
-				.rejectedValue(error.getRejectedValue() != null ? error.getRejectedValue().toString() : "null")
-				.message(error.getDefaultMessage())
-				.build())
-			.collect(Collectors.toList());
+    @ExceptionHandler({MethodArgumentNotValidException.class})
+    public ResponseEntity<Error> handleValidationException(MethodArgumentNotValidException ex) {
+        List<Error.FieldError> fieldErrors = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(error -> Error.FieldError.builder()
+                        .field(error.getField())
+                        .rejectedValue(error.getRejectedValue() != null ? error.getRejectedValue().toString() : "null")
+                        .message(error.getDefaultMessage())
+                        .build())
+                .collect(Collectors.toList());
 
-		Error response = Error.builder()
-			.timestamp(LocalDateTime.now())
-			.status(HttpStatus.BAD_REQUEST.value())
-			.error(HttpStatus.BAD_REQUEST.getReasonPhrase())
-			.message("Validation failed")
-			.fieldErrors(fieldErrors)
-			.build();
+        Error response = Error.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .message("Validation failed")
+                .fieldErrors(fieldErrors)
+                .build();
 
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-	}
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
 
-	@ExceptionHandler({DuplicateKeyException.class, DataIntegrityViolationException.class})
-	public ResponseEntity<Error> handleDuplicateValidationException(Exception ex) {
+    @ExceptionHandler({DuplicateKeyException.class, DataIntegrityViolationException.class})
+    public ResponseEntity<Error> handleDuplicateValidationException(Exception ex) {
 
-		Error response = Error.builder()
-			.timestamp(LocalDateTime.now())
-			.status(HttpStatus.BAD_REQUEST.value())
-			.error("Duplicate Key")
-			.message("Could not execute statement: Duplicate key or Duplicate entry")
-			.build();
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, "Could not execute statement: Duplicate key or Duplicate entry", "Duplicate Key");
 
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-	}
+    }
 
-	@ExceptionHandler({HttpClientErrorException.Unauthorized.class, AccessDeniedException.class})
-	public ResponseEntity<Error> handleUnauthorizedValidationException(Exception ex) {
+    @ExceptionHandler({HttpClientErrorException.Unauthorized.class, AccessDeniedException.class})
+    public ResponseEntity<Error> handleUnauthorizedValidationException(Exception ex) {
 
-		Error response = Error.builder()
-			.timestamp(LocalDateTime.now())
-			.status(HttpStatus.UNAUTHORIZED.value())
-			.error("Unauthorized")
-			.message("Unauthorized")
-			.build();
+        return buildErrorResponse(HttpStatus.UNAUTHORIZED, "Unauthorized", "Unauthorized");
+    }
 
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-	}
+    @ExceptionHandler({CategoryNotFoundException.class, ProductNotFoundException.class})
+    public ResponseEntity<Error> handleValidationException(Exception ex) {
 
-	@ExceptionHandler({CategoryNotFoundException.class, ProductNotFoundException.class})
-	public ResponseEntity<Error> handleValidationException(Exception ex) {
+        return buildErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage(), "NOT FOUND");
+    }
 
-		Error response = Error.builder()
-			.timestamp(LocalDateTime.now())
-			.status(HttpStatus.NOT_FOUND.value())
-			.error("NOT FOUND")
-			.message(ex.getMessage())
-			.build();
+    @ExceptionHandler({CategoryWithProductsException.class})
+    public ResponseEntity<Error> handleIsCategoryWithProductsException(Exception ex) {
 
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-	}
+        return buildErrorResponse(HttpStatus.CONFLICT, ex.getMessage(), "CONFLICT");
+    }
 
-	@ExceptionHandler({CategoryWithProductsException.class})
-	public ResponseEntity<Error> handleIsCategoryWithProductsException(Exception ex) {
+    @ExceptionHandler({HttpMessageNotReadableException.class})
+    public ResponseEntity<Error> handleValidationException(HttpMessageNotReadableException ex,
+                                                           WebRequest request) {
 
-		Error response = Error.builder()
-			.timestamp(LocalDateTime.now())
-			.status(HttpStatus.CONFLICT.value())
-			.error("CONFLICT")
-			.message(ex.getMessage())
-			.build();
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), "Json Error");
+    }
 
-		return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
-	}
-
-	@ExceptionHandler({HttpMessageNotReadableException.class})
-	public ResponseEntity<Error> handleValidationException(HttpMessageNotReadableException ex,
-																												WebRequest request) {
-
-		Error response = Error.builder()
-			.timestamp(LocalDateTime.now())
-			.status(HttpStatus.BAD_REQUEST.value())
-			.error("Json Error")
-			.message(ex.getMessage())
-			.build();
-
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-	}
+    private ResponseEntity<Error> buildErrorResponse(HttpStatus status, String message, String error) {
+        Error response = Error.builder()
+                .timestamp(LocalDateTime.now())
+                .status(status.value())
+                .error(error)
+                .message(message)
+                .build();
+        return ResponseEntity.status(status).body(response);
+    }
 }
