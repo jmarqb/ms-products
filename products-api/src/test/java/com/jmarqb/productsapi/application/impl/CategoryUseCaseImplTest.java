@@ -1,7 +1,7 @@
 package com.jmarqb.productsapi.application.impl;
 
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import com.jmarqb.productsapi.application.mapper.UpdateFieldMapper;
+import com.jmarqb.productsapi.domain.model.Pagination;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,11 +19,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static com.jmarqb.productsapi.Util.getPagination;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CategoryUseCaseImplTest {
@@ -31,6 +32,8 @@ class CategoryUseCaseImplTest {
 	private @Mock CategoryPersistencePort categoryPersistencePort;
 
 	private @Mock ProductPersistencePort productPersistencePort;
+
+	private @Mock UpdateFieldMapper updateFieldMapper;
 
 	private @InjectMocks CategoryUseCaseImpl categoryUseCaseImpl;
 
@@ -60,16 +63,18 @@ class CategoryUseCaseImplTest {
 		int size = 10;
 		String sort = "ASC";
 
+		Pagination pagination = getPagination(page, size, sort);
+
 		List<Category> expectedCategories = List.of(category);
 
 		when(categoryPersistencePort
-			.searchAllByRegex(searchRegex, PageRequest.of(page, size, Sort.Direction.ASC, "id")))
+			.searchAllByRegex(searchRegex, pagination))
 			.thenReturn(expectedCategories);
 
 		List<Category> actualCategories = categoryUseCaseImpl.search(searchRegex, page, size, sort);
 
 		assertThat(actualCategories).isEqualTo(expectedCategories);
-		verify(categoryPersistencePort).searchAllByRegex(searchRegex, PageRequest.of(page, size, Sort.Direction.ASC, "id"));
+		verify(categoryPersistencePort).searchAllByRegex(searchRegex, pagination);
 	}
 
 	@Test
@@ -79,16 +84,19 @@ class CategoryUseCaseImplTest {
 		int size = 10;
 		String sort = "ASC";
 
+		Pagination pagination = getPagination(page, size, sort);
+
+
 		List<Category> expectedCategories = List.of(category);
 
 		when(categoryPersistencePort
-			.searchAll(PageRequest.of(page, size, Sort.Direction.ASC, "id")))
+			.searchAll(pagination))
 			.thenReturn(expectedCategories);
 
 		List<Category> actualCategories = categoryUseCaseImpl.search(null, page, size, sort);
 
 		assertThat(actualCategories).isEqualTo(expectedCategories);
-		verify(categoryPersistencePort).searchAll(PageRequest.of(page, size, Sort.Direction.ASC, "id"));
+		verify(categoryPersistencePort).searchAll(pagination);
 	}
 
 	@Test
@@ -172,10 +180,12 @@ class CategoryUseCaseImplTest {
 		actualCategory.setDescription(dataToUpdateCategory.getDescription());
 
 		when(categoryPersistencePort.findByUidAndDeletedFalse(uid))
-			.thenReturn(actualCategory);
+				.thenReturn(actualCategory);
 
 		when(categoryPersistencePort.save(actualCategory))
-			.thenReturn(actualCategory);
+				.thenReturn(actualCategory);
+
+		doNothing().when(updateFieldMapper).updateCategory(dataToUpdateCategory, actualCategory);
 
 		Category updatedCategory = categoryUseCaseImpl.updateCategory(dataToUpdateCategory);
 
