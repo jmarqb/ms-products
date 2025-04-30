@@ -1,5 +1,6 @@
 package com.jmarqb.productsapi.infrastructure.adapters.output.persistence;
 
+import com.jmarqb.productsapi.domain.model.Pagination;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -43,6 +44,9 @@ class ProductPersistenceAdapterTest {
 
 	private Pageable pageable;
 
+	private final Pagination pagination = new Pagination(0, 10, "ASC", "uid");
+
+
 	@BeforeEach
 	void setUp() {
 		category = Instancio.of(CategoryEntity.class)
@@ -74,7 +78,8 @@ class ProductPersistenceAdapterTest {
 			.set(field(ProductEntity::getStock), product.getStock())
 			.create();
 
-		pageable = PageRequest.of(0, 20, Sort.Direction.ASC, "uid");
+		pageable = PageRequest.of(pagination.page(), pagination.size(), "asc".equalsIgnoreCase(pagination.sort()) ?
+				Sort.Direction.ASC : Sort.Direction.DESC, pagination.sortBy());
 	}
 
 	@Test
@@ -98,7 +103,7 @@ class ProductPersistenceAdapterTest {
 		when(productRepository.searchAll(pageable)).thenReturn(List.of(productEntity, productEntity));
 		when(productPersistenceMapper.toProductList(List.of(productEntity, productEntity))).thenReturn(List.of(product, product));
 
-		List<Product> result = productPersistenceAdapter.searchAll(pageable);
+		List<Product> result = productPersistenceAdapter.searchAll(pagination);
 
 		assertThat(result).isEqualTo(List.of(product, product));
 
@@ -112,7 +117,7 @@ class ProductPersistenceAdapterTest {
 		when(productRepository.searchAllByRegex("nameProduct", pageable)).thenReturn(List.of(productEntity, productEntity));
 		when(productPersistenceMapper.toProductList(List.of(productEntity, productEntity))).thenReturn(List.of(product, product));
 
-		List<Product> result = productPersistenceAdapter.searchAllByRegex("nameProduct", pageable);
+		List<Product> result = productPersistenceAdapter.searchAllByRegex("nameProduct", pagination);
 
 		assertThat(result).isEqualTo(List.of(product, product));
 
@@ -125,7 +130,7 @@ class ProductPersistenceAdapterTest {
 		when(productRepository.searchAllByCategory(category.getUid(), pageable)).thenReturn(List.of(productEntity, productEntity));
 		when(productPersistenceMapper.toProductList(List.of(productEntity, productEntity))).thenReturn(List.of(product, product));
 
-		List<Product> result = productPersistenceAdapter.searchAllByCategory(category.getUid(), pageable);
+		List<Product> result = productPersistenceAdapter.searchAllByCategory(category.getUid(), pagination);
 
 		assertThat(result).isEqualTo(List.of(product, product));
 
